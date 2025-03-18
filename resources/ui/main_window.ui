@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>838</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PTZ Camera Controller</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+    background-color: #f5f5f5;
+    color: #333333;
+}
+QLabel {
+    color: #333333;
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 12px;
+}
+QPushButton {
+    background-color: #4a90e2;
+    color: white;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 30px;
+    transition: all 0.3s;
+}
+QPushButton:hover {
+    background-color: #3a80d2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+QPushButton:pressed {
+    background-color: #2a70c2;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation-name: button-press;
+    animation-duration: 0.2s;
+}
+@keyframes button-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}
+QComboBox {
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: white;
+    color: #333333;
+    font-family: &quot;Segoe UI&quot;;
+    min-height: 30px;
+    transition: border 0.3s;
+}
+QComboBox:hover {
+    border: 1px solid #4a90e2;
+}
+QComboBox:pressed {
+    animation-name: combo-press;
+    animation-duration: 0.2s;
+}
+@keyframes combo-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: #c0c0c0;
+    border-left-style: solid;
+}
+QSlider::groove:horizontal {
+    border: 1px solid #c0c0c0;
+    height: 8px;
+    background: white;
+    margin: 2px 0;
+    border-radius: 4px;
+}
+QSlider::handle:horizontal {
+    background: #4a90e2;
+    border: 1px solid #4a90e2;
+    width: 18px;
+    height: 18px;
+    margin: -6px 0;
+    border-radius: 9px;
+    transition: background 0.2s;
+}
+QSlider::handle:horizontal:hover {
+    background: #3a80d2;
+}
+QSlider::handle:horizontal:pressed {
+    background: #2a70c2;
+    animation-name: slider-press;
+    animation-duration: 0.2s;
+}
+@keyframes slider-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+QFrame {
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+}
+QLineEdit {
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: white;
+    color: #333333;
+    font-family: &quot;Segoe UI&quot;;
+    min-height: 30px;
+    transition: border 0.3s;
+}
+QLineEdit:hover {
+    border: 1px solid #4a90e2;
+}
+QLineEdit:focus {
+    border: 1px solid #4a90e2;
+    animation-name: focus-animation;
+    animation-duration: 0.3s;
+}
+@keyframes focus-animation {
+    0% { border-color: #c0c0c0; }
+    100% { border-color: #4a90e2; }
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>12</number>
+    </property>
+    <property name="leftMargin">
+     <number>12</number>
+    </property>
+    <property name="topMargin">
+     <number>12</number>
+    </property>
+    <property name="rightMargin">
+     <number>12</number>
+    </property>
+    <property name="bottomMargin">
+     <number>12</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="qlabel_camera_view">
+        <property name="minimumSize">
+         <size>
+          <width>700</width>
+          <height>400</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="btn_up">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>▲</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btn_left">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>◄</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btn_center">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: #e0e0e0;
+color: #333333;
+QPushButton:pressed {
+    background-color: #c0c0c0;
+    animation-name: center-press;
+    animation-duration: 0.2s;
+}
+@keyframes center-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}</string>
+            </property>
+            <property name="text">
+             <string>●</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="btn_right">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>►</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="btn_down">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>▼</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="btn_zoom_in">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Zoom +</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_zoom_out">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>46</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Zoom -</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <item>
+           <widget class="QSlider" name="qslider_ptz_speed">
+            <property name="minimumSize">
+             <size>
+              <width>180</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>7</number>
+            </property>
+            <property name="value">
+             <number>3</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksBelow</enum>
+            </property>
+            <property name="tickInterval">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="btn_capture_auto">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>46</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #e67e22;
+QPushButton:hover {
+    background-color: #d35400;
+}
+QPushButton:pressed {
+    background-color: #c04a00;
+    animation-name: auto-press;
+    animation-duration: 0.2s;
+}
+@keyframes auto-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}</string>
+          </property>
+          <property name="text">
+           <string>Capture Auto</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../assets/icons/auto.png</normaloff>../assets/icons/auto.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_capture">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>46</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #00a86b;
+QPushButton:hover {
+    background-color: #009c63;
+}
+QPushButton:pressed {
+    background-color: #008c59;
+    animation-name: capture-press;
+    animation-duration: 0.2s;
+}
+@keyframes capture-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}</string>
+          </property>
+          <property name="text">
+           <string>Capture</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../assets/icons/camera.png</normaloff>../assets/icons/camera.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_controls">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="1" column="0">
+        <widget class="QComboBox" name="comboBox_camera">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>Main Entrance</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Parking Lot</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Lobby</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Warehouse</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="btn_reload">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #5c6bc0;
+color: white;
+border-radius: 4px;
+font-weight: bold;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+QPushButton:hover {
+    background-color: #4a5ab9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+QPushButton:pressed {
+    background-color: #3949ab;
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    animation-name: reload-press;
+    animation-duration: 0.3s;
+}
+
+@keyframes reload-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); rotate: -10deg; }
+    100% { transform: scale(1); }
+}</string>
+         </property>
+         <property name="text">
+          <string>↻</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QComboBox" name="comboBox_language">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>English</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Vietnamese</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Presets</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

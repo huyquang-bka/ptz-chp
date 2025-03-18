@@ -1,0 +1,15 @@
+# API Route
+base_url: http://172.34.64.10:42001
+additional_route: /Service/api
+
+# Login
+login_route: /token/auth
+login_payload:
+  username: string
+  password: string
+  client_id: EPS
+  client_secret: b0udcdl8k80cqiyt63uq
+  grant_type: password
+
+# Get camera list
+device_route: /device?page=1&itemsPerPage=999

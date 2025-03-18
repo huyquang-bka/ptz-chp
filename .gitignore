@@ -1,0 +1,62 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.Python
+*.egg
+*.egg-info/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+coverage.xml
+.tox/
+
+# Build
+*.spec
+build/
+dist/
+
+# Logs
+*.log
+
+# Local development settings
+.env
+.env.local
+
+# GitLab CI
+.pip-cache/
+
+#folder
+/export-images/
+/stitch-image/
+/stitched-images
+
+*.csv
+
+*.mp4
+*.avi
+*.jpg
+*.png
+*.jpeg
+*.gif
+*.bmp
