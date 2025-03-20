@@ -5,6 +5,7 @@ from main_app.service.preset_service import PresetService
 
 
 class PTZThread(QThread):
+    sig_capture = pyqtSignal()
     # Add a new signal for presets loaded
     presets_loaded = pyqtSignal(list)
 
@@ -68,8 +69,8 @@ class PTZThread(QThread):
                         tilt = position.get("tilt", 0.0)
                         zoom = position.get("zoom", 0.0)
 
-                        # Convert slider value (1-7) to a speed value (0.1-1.0)
-                        speed = min(1.0, max(0.1, self.movement_speed / 5.0))
+                        # Convert slider value (1-10) to a speed value (0.1-1.0)
+                        speed = min(1.0, max(0.1, self.movement_speed / 10.0))
 
                         # Move to the position using current speed setting
                         self.ptz_controller.absolute_move(
@@ -78,8 +79,8 @@ class PTZThread(QThread):
 
                     # Fallback to camera's preset if position data is not available
                     elif hasattr(self.ptz_controller, 'goto_preset'):
-                        # Convert slider value (1-7) to a speed value (0.1-1.0)
-                        speed = min(1.0, max(0.1, self.movement_speed / 5.0))
+                        # Convert slider value (1-10) to a speed value (0.1-1.0)
+                        speed = min(1.0, max(0.1, self.movement_speed / 10.0))
                         self.ptz_controller.goto_preset(preset_token, speed)
                         return True
         return False
@@ -138,6 +139,17 @@ class PTZThread(QThread):
             )
         return False
 
+    def tour_presets(self):
+        # get all presets saved in json file
+        presets = self.preset_service.get_presets(self.device.id)
+        # tour through all presets
+        for preset in presets:
+            self.goto_preset(preset["token"])
+            self.msleep(2500)
+            self.sig_capture.emit()
+            self.msleep(500)
+        self.code = "stop"
+
     def move_up(self):
         self.code = "up"
 
@@ -159,6 +171,9 @@ class PTZThread(QThread):
     def stop(self):
         self.code = "stop"
         self.ptz_controller.stop()
+
+    def capture_auto(self):
+        self.code = "capture_auto"
 
     def set_movement_speed(self, speed):
         """Set the movement speed (1 to 10)"""
@@ -194,5 +209,7 @@ class PTZThread(QThread):
             elif self.code == "zoom_out":
                 self.ptz_controller.continuous_move(
                     0, 0, -self.default_per_move * speed_factor)
+            elif self.code == "capture_auto":
+                self.tour_presets()
 
             self.msleep(10)

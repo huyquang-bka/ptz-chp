@@ -6,15 +6,21 @@ from queue import Queue
 
 
 class CaptureThread(QThread):
-    def __init__(self, parent=None, capture_queue: Queue = None):
+    def __init__(self, parent=None, capture_queue: Queue = None, event_capture_queue: Queue = None):
         self.__thread_running = False
         super().__init__(parent)
         self.__device = None
         self.cap = None
         self.capture_queue = capture_queue
+        self.event_capture_queue = event_capture_queue
+
+        self.need_capture = False
 
     def on_device_selected(self, device: Device):
         self.__device = device
+
+    def on_capture(self):
+        self.need_capture = True
 
     def init_capture(self):
         try:
@@ -45,6 +51,9 @@ class CaptureThread(QThread):
                 self.init_capture()
                 continue
             fps += 1
+            if self.need_capture:
+                self.event_capture_queue.put(frame)
+                self.need_capture = False
             rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             if self.capture_queue.empty():
                 self.capture_queue.put(rgb_image)

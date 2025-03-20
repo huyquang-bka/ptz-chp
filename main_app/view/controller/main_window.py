@@ -7,6 +7,7 @@ from main_app.model.device import Device
 from typing import Dict, Any, List
 from main_app.thread.capture_thread import CaptureThread
 from main_app.thread.ptz_thread import PTZThread
+from main_app.thread.event_thread import EventThread
 from queue import Queue
 from main_app.view.ui.preset_container_widget import PresetContainerWidget
 
@@ -49,6 +50,9 @@ class MainWindow(QMainWindow):
         self.init_thread()
         self.init_signals()
 
+        # hotkey set
+        self.key_pressed_flags = set()
+
         # Store preset buttons
         self.preset_buttons = {}
 
@@ -70,18 +74,25 @@ class MainWindow(QMainWindow):
     def init_thread(self):
         # queue
         self.capture_queue = Queue()
+        self.event_capture_queue = Queue()
         # thread
-        self.capture_thread = CaptureThread(capture_queue=self.capture_queue)
+        self.capture_thread = CaptureThread(
+            capture_queue=self.capture_queue, event_capture_queue=self.event_capture_queue)
         self.ptz_thread = PTZThread()
+        self.event_thread = EventThread(
+            event_capture_queue=self.event_capture_queue)
         # start thread
         self.capture_thread.start()
         self.ptz_thread.start()
+        self.event_thread.start()
 
     def init_signals(self):
         self.sig_device_changed.connect(self.capture_thread.on_device_selected)
         self.sig_device_changed.connect(self.ptz_thread.on_device_selected)
+        self.sig_device_changed.connect(self.event_thread.on_device_selected)
         # Connect the presets_loaded signal
         self.ptz_thread.presets_loaded.connect(self.on_presets_loaded)
+        self.ptz_thread.sig_capture.connect(self.capture_thread.on_capture)
         self.connect_buttons()
 
     def connect_buttons(self):
@@ -92,6 +103,10 @@ class MainWindow(QMainWindow):
         self.ui.btn_right.pressed.connect(self.ptz_thread.move_right)
         self.ui.btn_zoom_in.pressed.connect(self.ptz_thread.zoom_in)
         self.ui.btn_zoom_out.pressed.connect(self.ptz_thread.zoom_out)
+        # Connect Capture Auto button to tour presets
+        self.ui.btn_capture_auto.clicked.connect(self.ptz_thread.capture_auto)
+        self.ui.btn_capture.clicked.connect(
+            self.capture_thread.on_capture)
         # stop moving
         self.ui.btn_up.released.connect(self.ptz_thread.stop)
         self.ui.btn_down.released.connect(self.ptz_thread.stop)
@@ -353,3 +368,37 @@ class MainWindow(QMainWindow):
         """Handle speed slider value change"""
         # Update speed in PTZ thread
         self.ptz_thread.set_movement_speed(value)
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        key = event.key()
+        print(f"Key pressed: {key}")
+        if key not in self.key_pressed_flags:
+            self.key_pressed_flags.add(key)
+            print(f"Key pressed: {key}")
+            if key == QtCore.Qt.Key_Up:
+                self.ptz_thread.move_up()
+            elif key == QtCore.Qt.Key_Down:
+                self.ptz_thread.move_down()
+            elif key == QtCore.Qt.Key_Left:
+                self.ptz_thread.move_left()
+            elif key == QtCore.Qt.Key_Right:
+                self.ptz_thread.move_right()
+            elif key == QtCore.Qt.Key_Plus:
+                self.ptz_thread.zoom_in()
+            elif key == QtCore.Qt.Key_Minus:
+                self.ptz_thread.zoom_out()
+            elif key == QtCore.Qt.Key_Space:
+                self.capture_thread.on_capture()
+            elif key == QtCore.Qt.Key_Return:
+                self.ptz_thread.capture_auto()
+
+    def keyReleaseEvent(self, event: QtGui.QKeyEvent):
+        key = event.key()
+        if key in self.key_pressed_flags:
+            self.key_pressed_flags.remove(key)
+
+            # stop only for movement keys
+            if key in (QtCore.Qt.Key_Up, QtCore.Qt.Key_Down,
+                       QtCore.Qt.Key_Left, QtCore.Qt.Key_Right,
+                       QtCore.Qt.Key_Plus, QtCore.Qt.Key_Minus):
+                self.ptz_thread.stop()
