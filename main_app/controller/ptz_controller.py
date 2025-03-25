@@ -18,7 +18,8 @@ class PTZController(QObject):
             username, password, host = device.get_ptz_info()
             port = 80
             print("ptz info", username, password, host)
-            self.cam = ONVIFCamera(host, port, username, password)
+            self.cam = ONVIFCamera(host, port, username,
+                                   password, wsdl_dir="wsdl")
             self.media = self.cam.create_media_service()
             self.ptz = self.cam.create_ptz_service()
             self.profile = self.media.GetProfiles()[0]
