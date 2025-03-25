@@ -52,7 +52,7 @@ class EventThread(QThread):
             try:
                 # Save image and get the path from server
                 image_path = self.save_image_to_server(frame)
-
+                image_path = image_path.replace('"', "")
                 # Prepare MQTT message
                 message = {
                     "checkPointId": self.__device.checkPointId,
