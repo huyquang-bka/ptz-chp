@@ -236,7 +236,7 @@ class CustomHTTPRequest:
 
     def post(self, endpoint: str, data: Optional[Dict[str, Any]] = None,
              json: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None,
-             timeout: Optional[int] = None, retry_count: int = 0) -> requests.Response:
+             timeout: Optional[int] = None, retry_count: int = 0, file: Optional[bytes] = None) -> requests.Response:
         """Make a POST request to the API with automatic token refresh
 
         Args:
@@ -257,11 +257,11 @@ class CustomHTTPRequest:
 
         url = self.get_full_url(endpoint)
         response = requests.post(
-            url, data=data, json=json, headers=all_headers, timeout=timeout)
+            url, data=data, json=json, headers=all_headers, timeout=timeout, files=file)
 
         # Define retry function
         def retry(new_retry_count):
-            return self.post(endpoint, data, json, headers, timeout, new_retry_count)
+            return self.post(endpoint, data, json, headers, timeout, new_retry_count, file)
 
         # Handle response and potential token refresh
         response, was_retried = self._handle_response(

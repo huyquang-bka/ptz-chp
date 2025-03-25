@@ -1,5 +1,5 @@
 #mqtt
-mqtt_broker: "192.168.1.100"
+mqtt_broker: "172.34.64.10"
 mqtt_port: 1883
 mqtt_username: "admin"
 mqtt_password: "admin"

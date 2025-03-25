@@ -16,6 +16,7 @@ class ApiRoute:
         "grant_type": "password"
     })
     device_route: str = "/device?page=1&itemsPerPage=999"
+    save_image_route: str = "/File"
 
     def __post_init__(self):
         with open("resources/config/api_route.yaml", "r") as f:

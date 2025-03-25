@@ -90,6 +90,7 @@ class MainWindow(QMainWindow):
         self.sig_device_changed.connect(self.capture_thread.on_device_selected)
         self.sig_device_changed.connect(self.ptz_thread.on_device_selected)
         self.sig_device_changed.connect(self.event_thread.on_device_selected)
+        self.event_thread.sig_capturing.connect(self.update_button_capture)
         # Connect the presets_loaded signal
         self.ptz_thread.presets_loaded.connect(self.on_presets_loaded)
         self.ptz_thread.sig_capture.connect(self.capture_thread.on_capture)
@@ -402,3 +403,8 @@ class MainWindow(QMainWindow):
                        QtCore.Qt.Key_Left, QtCore.Qt.Key_Right,
                        QtCore.Qt.Key_Plus, QtCore.Qt.Key_Minus):
                 self.ptz_thread.stop()
+
+    def update_button_capture(self, status: bool):
+        print(f"Update button capture: {status}")
+        self.ui.btn_capture.setEnabled(not status)
+        self.ui.btn_capture_auto.setEnabled(not status)

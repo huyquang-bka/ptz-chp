@@ -46,6 +46,10 @@ QPushButton:pressed {
     animation-name: button-press;
     animation-duration: 0.2s;
 }
+QPushButton:disabled {
+    background-color: #7a7a7a;
+    color: #d0d0d0;
+}
 @keyframes button-press {
     0% { transform: scale(1); }
     50% { transform: scale(0.97); }
@@ -363,6 +367,10 @@ QPushButton:pressed {
     animation-name: auto-press;
     animation-duration: 0.2s;
 }
+QPushButton:disabled {
+    background-color: #8a4b15;
+    color: #d0d0d0;
+}
 @keyframes auto-press {
     0% { transform: scale(1); }
     50% { transform: scale(0.97); }
@@ -395,6 +403,10 @@ QPushButton:pressed {
     background-color: #008c59;
     animation-name: capture-press;
     animation-duration: 0.2s;
+}
+QPushButton:disabled {
+    background-color: #006540;
+    color: #d0d0d0;
 }
 @keyframes capture-press {
     0% { transform: scale(1); }

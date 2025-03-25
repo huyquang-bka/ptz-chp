@@ -13,3 +13,6 @@ login_payload:
 
 # Get camera list
 device_route: /device?page=1&itemsPerPage=999
+
+# Save image
+save_image_route: /File

@@ -1,5 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Body, Depends
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, File, UploadFile, HTTPException
 import os
 from main_app.service.preset_service import PresetService
 from datetime import datetime
@@ -86,25 +85,18 @@ async def update_preset(camera_id: int, preset_token: str, data: PresetData):
 
 
 @app.post("/api/save-image")
-async def save_image(image: UploadFile = File(...)):
-    """Save an image file"""
+async def save_image(file: bytes = File(...)):
+    """Save an image file with auto-generated name"""
     try:
-        if not image:
-            raise HTTPException(
-                status_code=400, detail="No image file provided")
-
-        if image.filename == '':
-            raise HTTPException(status_code=400, detail="No selected file")
-
-        # Generate unique filename using timestamp
+        # Generate unique filename using timestamp and UUID
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{timestamp}_{image.filename}"
+        unique_id = str(uuid.uuid4())[:8]
+        filename = f"{timestamp}_{unique_id}.jpg"
         filepath = os.path.join(UPLOAD_FOLDER, filename)
 
         # Save the file
-        contents = await image.read()
         with open(filepath, 'wb') as f:
-            f.write(contents)
+            f.write(file)
 
         return {
             "message": "Image saved successfully",
