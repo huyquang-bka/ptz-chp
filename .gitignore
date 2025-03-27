@@ -46,17 +46,4 @@ dist/
 # GitLab CI
 .pip-cache/
 
-#folder
-/export-images/
-/stitch-image/
-/stitched-images
-
 *.csv
-
-*.mp4
-*.avi
-*.jpg
-*.png
-*.jpeg
-*.gif
-*.bmp
