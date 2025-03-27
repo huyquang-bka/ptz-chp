@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         # set window icon
-        self.setWindowIcon(QIcon("resources/images/logo.png"))
+        self.setWindowIcon(QIcon("resources/assets/icons/logo.png"))
         # Store user data
         self.user_data = user_data
 

@@ -12,7 +12,7 @@ class LoginForm(QDialog):
         self.ui.setupUi(self)
 
         # set window logo
-        self.setWindowIcon(QIcon("resources/images/logo.png"))
+        self.setWindowIcon(QIcon("resources/assets/icons/logo.png"))
 
         # Get language manager instance
         self.language_manager = LanguageManager()
