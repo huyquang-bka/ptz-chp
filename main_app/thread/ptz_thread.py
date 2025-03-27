@@ -145,7 +145,7 @@ class PTZThread(QThread):
         # tour through all presets
         for preset in presets:
             self.goto_preset(preset["token"])
-            self.msleep(2500)
+            self.msleep(3000)
             self.sig_capture.emit()
             self.msleep(500)
         self.code = "stop"
