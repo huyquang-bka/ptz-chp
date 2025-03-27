@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QDialog
+from PyQt5.QtGui import QIcon
 from main_app.view.ui.login_form import Ui_Dialog
 from main_app.model.language_manager import LanguageManager
 from main_app.utils.ui_helpers import setup_language_icons, setup_logo_image, set_button_state
@@ -9,6 +10,9 @@ class LoginForm(QDialog):
         super(LoginForm, self).__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+
+        # set window logo
+        self.setWindowIcon(QIcon("resources/images/logo.png"))
 
         # Get language manager instance
         self.language_manager = LanguageManager()

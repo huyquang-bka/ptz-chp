@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QPushButton, QInputDialog, QVBoxLayout, QHBoxLayout, QWidget, QScrollArea, QFrame
+from PyQt5.QtGui import QIcon
 from main_app.view.ui.main_window import Ui_MainWindow
 from main_app.model.language_manager import LanguageManager
 from main_app.service.device_service import DeviceService
@@ -19,6 +20,9 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # set window icon
+        self.setWindowIcon(QIcon("resources/images/logo.png"))
         # Store user data
         self.user_data = user_data
 
